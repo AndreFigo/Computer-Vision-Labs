@@ -1,4 +1,5 @@
 function [img1] = ImageFilter(img0, h)
+    img0=double(img0);
     dimensions = size(img0);
 
  
@@ -7,21 +8,22 @@ function [img1] = ImageFilter(img0, h)
 
     % Conv 2D 1D 1D
     [U,S,V] = svd(h);
-
-    isSeperable = 1;
+    eps = 0.0000001;
+    isSeparable = 0;
+    if S(1,1) < eps
+        isSeparable = 1;
+    end
     % Check if it is Seperable
 
-    eps = 0.000001;
     for i = 2:size(S)
-        
         if S(i,i) > eps
-            disp(S(i,i))
-            isSeperable = 0;
+            %disp(S(i,i))
+            isSeparable = 0;
         end
    
     end
     % Case it is seperable
-    if isSeperable == 1
+    if isSeparable == 1
         y = sqrt(S(1,1))*U(:,1);
         x = sqrt(S(1,1))*transpose(V(:,1));
         
@@ -59,8 +61,31 @@ function [img1] = ImageFilter(img0, h)
                 end 
             end 
         end
-       
+    
+
+    else 
+        k_size = size(h);
+        pad_value = floor(k_size(2)/2);
+        
+        %p=0;
+        imgPadded = padarray(img0,[pad_value, pad_value]);
+        for i = 1:dimensions(1) 
+            for j = 1:dimensions(2)
+%                 img1(i,j) = img1(i,j) + sum(imgPadded(i:i+k_size(2)-1,j:j+k_size(1)-1).* h, "all");
+                for k = 1:k_size(2) 
+                    ii = i + k - 1; 
+                    for l = 1:k_size(1) 
+                        jj = j + l - 1;
+                        %p = p+1;
+                        img1(i,j) = img1(i,j) + imgPadded(ii,jj)* h(l,k); 
+                    end 
+                end
+            end 
+        end
+        %disp(p)
     end
+
     %Todo Case not seperable
+    img1 = uint8(img1);
     
 end 
