@@ -10,6 +10,7 @@ function [img1] = EdgeFilter(img0, sigma)
     
     sobel_kernel = fspecial('sobel');
 
+
     img_smooth = ImageFilter(img0, gaussian_kernel);
 
     img_smooth_x = ImageFilter(img_smooth, sobel_kernel);
@@ -33,7 +34,8 @@ function [img1] = EdgeFilter(img0, sigma)
     img1 = gradients; 
   
 
-    
+    figure;
+    imshow(gradients);
 
     for i = 1:r
         for j = 1: c

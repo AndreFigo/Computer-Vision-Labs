@@ -10,6 +10,8 @@ function [img1] = ImageFilter(img0, h)
     [U,S,V] = svd(h);
     eps = 0.0000001;
     isSeparable = 0;
+
+    % check rank
     if S(1,1) < eps
         isSeparable = 1;
     end
@@ -66,12 +68,12 @@ function [img1] = ImageFilter(img0, h)
     else 
         k_size = size(h);
         pad_value = floor(k_size(2)/2);
-        
+        %disp(pad_value)
         %p=0;
         imgPadded = padarray(img0,[pad_value, pad_value]);
         for i = 1:dimensions(1) 
             for j = 1:dimensions(2)
-%                 img1(i,j) = img1(i,j) + sum(imgPadded(i:i+k_size(2)-1,j:j+k_size(1)-1).* h, "all");
+%                img1(i,j) = img1(i,j) + sum(imgPadded(i:i+k_size(2)-1,j:j+k_size(1)-1).* h, "all");
                 for k = 1:k_size(2) 
                     ii = i + k - 1; 
                     for l = 1:k_size(1) 
