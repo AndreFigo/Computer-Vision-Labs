@@ -1,4 +1,5 @@
 clear;
+close all;
 
 datadir     = '../data';    %the directory containing the images
 resultsdir  = '../results'; %the directory for dumping results

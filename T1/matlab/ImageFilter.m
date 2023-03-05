@@ -87,7 +87,7 @@ function [img1] = ImageFilter(img0, h)
         %disp(p)
     end
 
-    %Todo Case not seperable
-    img1 = uint8(img1);
+
+    % img1 = uint8(img1);
     
 end 

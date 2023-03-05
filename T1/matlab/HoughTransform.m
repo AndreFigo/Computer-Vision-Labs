@@ -4,47 +4,52 @@ function [H, rhoScale, thetaScale] = HoughTransform(Im, threshold, rhoRes, theta
 
 % Usage: [H, rhoScale, thetaScale] = HoughTransform(Im, threshold, rhoRes, thetaRes) 
     
-
-    im = double(Im)/max(max(Im));
+    % im= Im;
+    % disp(max(Im(:)))
+    im = double(Im)/max(Im(:));
     %im = double(Im);
     [rows, cols] = size(im);
-    maxRho = sqrt((rows-1)^2 + (cols-1)^2);
-    %disp(maxRho)
-    rhoScale = -maxRho:rhoRes:maxRho;
-    %disp(rhoScale)
+    maxRho = sqrt((rows)^2 + (cols)^2);
+    rhoScale = 0:rhoRes:maxRho;
+
     thetaScale = 0:thetaRes:2*pi;	
-    H = zeros(length(rhoScale), length(thetaScale));
-    p=0;
-    for i = 1:rows
-        for j = 1:cols
-            if im(i,j) < threshold
-                continue;
-            else
-                %disp(1)
-                for k = 1:length(thetaScale)
-                    rho = j*cos(thetaScale(k)) + i*sin(thetaScale(k));
-                    %disp(rho)
-                    p = p+1;
-                    rhoIndex = round(rho/rhoRes) + ceil(length(rhoScale)/2);
-                    
-                    %disp(rhoIndex)
-                    H(rhoIndex, k) = H(rhoIndex, k) + 1;
-                end
-            end
-        end
+
+    H = zeros(length(rhoScale)-1, length(thetaScale)-1);
+
+    [Ys, Xs] = find(Im>threshold);
+
+    for i = 1:length(thetaScale)
+        rhos = Xs*cos(thetaScale(i)) + Ys*sin(thetaScale(i));
+        thetas = ones(size(rhos)) * thetaScale(i);
+        H = H + histcounts2(rhos, thetas , rhoScale, thetaScale);
+        
     end
     
-
+    % for i = 1:rows
+    %     for j = 1:cols
+    %         if im(i,j) < threshold
+    %             continue;
+    %         else
+    %             for k = 1:length(thetaScale)
+    %                 rho = j*cos(thetaScale(k)) + i*sin(thetaScale(k));
+    %                 if rho > 0
+    %                     rhoIndex = round(rho/rhoRes) + 1;
+    %                     H(rhoIndex, k) = H(rhoIndex, k) + 1;
+    %                 end
+    %             end
+    %         end
+    %     end
+    % end
     %count only positive rho
 
-    H = H ( floor(length(rhoScale)/2): end, :);
-    disp(max(max(H)))
-    figure;
-    imshow(uint8(H/ max(max(H) )* 255));
+    % H = H ( floor(length(rhoScale)/2): end, :);
+    % rhoScale = 0:rhoRes:maxRho;
     
-    H = uint8(H/ max(max(H) )* 255);
+    % disp(max(max(H)))
 
-    disp(p)
+    
+    % H = uint8(H/ max(max(H) )* 255);
+
 
 end
         
