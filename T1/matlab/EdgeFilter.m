@@ -35,8 +35,8 @@ function [img1] = EdgeFilter(img0, sigma)
 
     
     img1 = gradients; 
-    
-    img1(gradients<0.2) = 0;
+
+    img1(gradients<0.05 * max(max(gradients))) = 0;
 
 
     for i = 1:r
