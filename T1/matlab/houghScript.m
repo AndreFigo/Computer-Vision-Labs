@@ -5,16 +5,20 @@ datadir     = '../data';    %the directory containing the images
 resultsdir  = '../results'; %the directory for dumping results
 
 %parameters
-sigma     = 2;
+sigma     = 5;
 threshold = 0.03;
 rhoRes    = 2;
 thetaRes  = pi/90;
-nLines    = 50;
+nLines    = 150;
 %end of parameters
 
+MinLength = 10;
+
+resultsdir = sprintf('%s/%.2f_%.3f_%.2f_%.4f_%d_%.2ff',resultsdir,sigma, threshold, rhoRes, thetaRes, nLines, MinLength);
+mkdir(resultsdir);
 imglist = dir(sprintf('%s/*.jpg', datadir));
 
-for i = 1:numel(imglist)
+for i = 7:7
     
     %read in images%
     [path, imgname, dummy] = fileparts(imglist(i).name);
@@ -30,8 +34,7 @@ for i = 1:numel(imglist)
     [Im] = EdgeFilter(img, sigma);   
     [H,rhoScale,thetaScale] = HoughTransform(Im, threshold, rhoRes, thetaRes);
     [rhos, thetas] = HoughLines(H, nLines);
-    lines = houghlines(Im>threshold, 180*(thetaScale/pi), rhoScale, [rhos,thetas],'FillGap',5,'MinLength',10);
-    
+    lines = houghlines(Im>threshold, 180*(thetaScale/pi), rhoScale, [rhos,thetas],'FillGap',5,'MinLength',MinLength);
     %everything below here just saves the outputs to files%
     fname = sprintf('%s/%s_01edge.png', resultsdir, imgname);
     imwrite(sqrt(Im/max(Im(:))), fname);

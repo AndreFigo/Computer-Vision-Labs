@@ -44,23 +44,25 @@ function [img1] = ImageFilter(img0, h)
         
         for i = 1:dimensions(1) 
             for j = 1:dimensions(2) 
-                for k = 1:x_size(2)  
-                        ii = i+k -1;
-                        jj = j + pad_value;
-                        img_aux(i,j) = img_aux(i,j) + imgPadded(ii,jj)* x(1,k); 
+                img_aux(i,j) = sum(imgPadded(i:i+x_size(2)-1,j).* x, "all");
 
-                end 
+                % for k = 1:x_size(2)  
+                %         ii = i+k -1;
+                %         jj = j + pad_value;
+                %         img_aux(i,j) = img_aux(i,j) + imgPadded(ii,jj)* x(1,k); 
+
+                % end 
             end 
         end
         img_aux = padarray(img_aux,[pad_value, pad_value] );
         for i = 1:dimensions(1) 
             for j = 1:dimensions(2)
-        
-                for l = 1:y_size(1)  
-                        ii = i + pad_value; 
-                        jj = j+l-1;
-                        img1(i,j) = img1(i,j) + img_aux(ii,jj)* y(l,1); 
-                end 
+                img1(i,j) = sum(img_aux(i,j:j+y_size(1)-1).* y, "all");
+                % for l = 1:y_size(1)  
+                %         ii = i + pad_value; 
+                %         jj = j+l-1;
+                %         img1(i,j) = img1(i,j) + img_aux(ii,jj)* y(l,1); 
+                % end 
             end 
         end
     
@@ -68,23 +70,19 @@ function [img1] = ImageFilter(img0, h)
     else 
         k_size = size(h);
         pad_value = floor(k_size(2)/2);
-        %disp(pad_value)
-        %p=0;
         imgPadded = padarray(img0,[pad_value, pad_value]);
         for i = 1:dimensions(1) 
             for j = 1:dimensions(2)
-%                img1(i,j) = img1(i,j) + sum(imgPadded(i:i+k_size(2)-1,j:j+k_size(1)-1).* h, "all");
+            %    img1(i,j) =  sum(imgPadded(i:i+k_size(2)-1,j:j+k_size(1)-1).* h, "all");
                 for k = 1:k_size(2) 
                     ii = i + k - 1; 
                     for l = 1:k_size(1) 
                         jj = j + l - 1;
-                        %p = p+1;
                         img1(i,j) = img1(i,j) + imgPadded(ii,jj)* h(l,k); 
                     end 
                 end
             end 
         end
-        %disp(p)
     end
 
 

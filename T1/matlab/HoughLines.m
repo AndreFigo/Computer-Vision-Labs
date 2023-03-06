@@ -5,7 +5,7 @@ function [rhos, thetas] = HoughLines(H, nLines)
     
     h_size = size(H);
     
-    supp = 20;
+    supp = 15;
     
     [H_sorted, ind ] = sort(H(:), 'descend');
     [rho_ind, theta_ind] = ind2sub([rows, cols], ind);
