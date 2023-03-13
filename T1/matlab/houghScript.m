@@ -5,11 +5,11 @@ datadir     = '../data';    %the directory containing the images
 resultsdir  = '../results'; %the directory for dumping results
 
 %parameters
-sigma     = 5;
-threshold = 0.03;
-rhoRes    = 2;
-thetaRes  = pi/90;
-nLines    = 150;
+sigma     = 2;
+threshold = 0.07;
+rhoRes    = 5;
+thetaRes  = pi/60;
+nLines    = 50;
 %end of parameters
 
 MinLength = 10;
@@ -18,7 +18,7 @@ resultsdir = sprintf('%s/%.2f_%.3f_%.2f_%.4f_%d_%.2ff',resultsdir,sigma, thresho
 mkdir(resultsdir);
 imglist = dir(sprintf('%s/*.jpg', datadir));
 
-for i = 7:7
+for i = 1:numel(imglist)
     
     %read in images%
     [path, imgname, dummy] = fileparts(imglist(i).name);

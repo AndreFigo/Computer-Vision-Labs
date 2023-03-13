@@ -15,6 +15,9 @@ function [rhos, thetas] = HoughLines(H, nLines)
     
 
     for i = 2:nLines * 4
+        if i > length(H_sorted)
+            break;
+        end
         for j = 1: i-1
             rho_diff = abs(rho_ind(i) - rho_ind(j));
             theta_diff = abs(theta_ind(i) - theta_ind(j));
