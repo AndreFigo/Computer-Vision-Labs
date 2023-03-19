@@ -29,6 +29,7 @@ function [Descriptors] = FeatureDescriptor(Img,Pts,Dscpt_type,Patch_size)
         end
     end if
 
+
 end
         
         

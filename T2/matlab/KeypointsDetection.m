@@ -5,6 +5,5 @@ function [Pts] = KeypointsDetection(Img,Pts)
     Ix = ImageFilter(Img, gaussian_derivative);
     Iy = ImageFilter(Img, gaussian_derivative');
     
-
 end
         
