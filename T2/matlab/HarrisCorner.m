@@ -31,7 +31,8 @@ gaussian_k_i = fspecial('gaussian', k_size, sigma_i);
 size_x = size(img0,1);
 size_y = size(img0,2);
 
-pad_value = floor(k_size(2)/2);
+pad_value = floor(k_size/2);
+
 Ix_padded = padarray(Ix,[pad_value, pad_value]);
 Iy_padded = padarray(Iy,[pad_value, pad_value]);
 
@@ -42,11 +43,17 @@ H = zeros(size_x, size_y, 2,2);
 
 for i = 1:size_x
     for j = 1:size_y 
-        ix = Ix_padded(i:i+k_size(2)-1,j:j+k_size(1)-1);
-        iy = Iy_padded(i:i+k_size(2)-1,j:j+k_size(1)-1);
-        ix2 =  sum(ix.*ix.* h, "all");
-        iy2 = sum(iy.*iy.* h, "all");
-        ixy = sum(ix.*iy.* h, "all");
+        ix = Ix_padded(i:i+k_size-1,j:j+k_size-1);
+        iy = Iy_padded(i:i+k_size-1,j:j+k_size-1);
+        %disp(gaussian_k_i.* ix.*ix);
+        aux1 = gaussian_k_i.* ix.*ix;
+        aux2 = gaussian_k_i.* iy.*iy;
+        aux3 = gaussian_k_i.* ix.*iy;
+       
+        %disp(size(ix))
+        ix2 =  sum(aux1, "all");
+        iy2 = sum(aux2, "all");
+        ixy = sum(aux3, "all");
         H(i,j,:,:) = [ix2, ixy; ixy, iy2];
     end
 end
@@ -54,20 +61,21 @@ end
 c = zeros(size_x, size_y);
 
 
-dets = H(:,:,:,1) .* H(:,:,:,4) - H(:,:,:,2) .* H(:,:,:,3);
-traces = H(:,:,:,1) + H(:,:,:,4);
+dets = H(:,:,1,1) .* H(:,:,2,2) - H(:,:,2,1) .* H(:,:,1,2);
+traces = H(:,:,1,1) + H(:,:,2,2);
 c = dets - 0.1 * traces.^2;
 
-c = c(c> threshold/100 * max(c(:)));
-
+c(c< thresh/100 * max(c(:))) = 0;
 % find local maxima in a 7x7 window
-c_max = ordfilt2(c, NMS_size^2, ones(NMS_size));
+window = ones (NMS_size);
+window(ceil(NMS_size/2), ceil(NMS_size/2))= 0 ;
+c_max = ordfilt2(c, NMS_size^2-1, window);
 
 % find the coordinates of the local maxima
 
 % Pts = [x y c] where x and y are the coordinates of the corners and c is
 % the corner strength
-[rows, cols] = find(c_max == c);
+[rows, cols] = find(c_max < c);
 Pts = [rows, cols];
 
 
