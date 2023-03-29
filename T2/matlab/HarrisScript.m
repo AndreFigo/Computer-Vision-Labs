@@ -1,17 +1,17 @@
 clear;
 
-datadir     = '../datasets/bikes';    %the directory containing the images
+datadir     = '../datasets/graf';    %the directory containing the images
 resultsdir  = '../results'; %the directory for dumping results
 
 %parameters
 sigma_d  = 1;                  % Recommended. Adjust if needed.
 sigma_i  = 2;                  % Recommended. Adjust if needed.
-Tresh_R = 5;                   % Set as example. Adjust if needed.
+Tresh_R = 0.05;                   % Set as example. Adjust if needed.
 NMS_size = 10;                 % Recommended. Adjust if needed.
-Patchsize  = 40;               % Set as example. Will depends on the scale.
-Tresh_Metric = 10 ;            % Set as example. Minimum distance metric error for matching
+Patchsize  = 8;               % Set as example. Will depends on the scale.
+Tresh_Metric = 0.7 ;            % Set as example. Minimum distance metric error for matching
 Descriptor_type  = 'S-MOPS';   % SIMPLE -> Simple 5x5 patch ; S-MOPS -> Simplified MOPS
-Metric_type = 'SSD';           % RATIO -> Ratio test ; SSD -> Sum Square Distance
+Metric_type = 'RATIO';           % RATIO -> Ratio test ; SSD -> Sum Square Distance
 
 Min_Query_features = 50;  % minimum number of 50 Harris points in Query image
 %end of parameters
@@ -37,7 +37,7 @@ Pts_1 = HarrisCorner(img1,Tresh_R,sigma_d,sigma_i,NMS_size);
 % Detect Keypoints 
 Pts_N1 = KeypointsDetection(img1,Pts_1);
 % Extract keypoints descriptors 
-Dscrpt1 = FeatureDescriptor(img1,Pts_N_1,Descriptor_type,Patchsize);
+Dscrpt1 = FeatureDescriptor(img1,Pts_N1,Descriptor_type,Patchsize);
 
 %---------------------------------------------------------------
 % PERFORM FEATURE MATCHING between QUERY and TEST images
@@ -54,7 +54,7 @@ if size(Dscrpt1,1) > Min_Query_features
     [path2, imgname2, dummy2] = fileparts(imglist(i).name);
     img2 = imread(sprintf('%s/%s', datadir, imglist(2).name));
     
-    if (ndims(img) == 3)
+    if (ndims(img2) == 3)
         img2 = rgb2gray(img2);
     end
     
@@ -70,11 +70,11 @@ if size(Dscrpt1,1) > Min_Query_features
     
     %actual feature matching
     
-    MatchList = FeatureMatching(Dscpt1,Dscpt2,Tresh_Metric,Metric_type);
+    MatchList = FeatureMatching(Dscrpt1, Dscrpt2, Tresh_Metric, Metric_type);
     
     %Show matched keypoints and keypoint's feature patches
     
-    ShowMatching(MatchList,img1,img2,Dscpt1,Dscpt2)
+    ShowMatching(MatchList,img1,img2,Dscrpt1,Dscrpt2, Pts_N1, Pts_N2);
     
   end
 end

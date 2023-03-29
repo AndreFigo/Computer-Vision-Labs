@@ -60,7 +60,5 @@ for i =1:size(Pts_N1,1)
     axis equal;
     % xlim([0 size(img,2)]);
     % ylim([0 size(img,1)]);
-    
-
 end
 
