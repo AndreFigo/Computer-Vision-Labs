@@ -1,8 +1,10 @@
 clear;
 close all;
 
-datadir     = '../datasets/bikes';    %the directory containing the images
+data_folder ='graf';
 
+datadir     = '../datasets';    %the directory containing the images
+datadir = sprintf('%s/%s',datadir, data_folder);
 %parameters
 sigma_d  = 1;                  % Recommended. Adjust if needed.
 sigma_i  = 2;                  % Recommended. Adjust if needed.
@@ -16,7 +18,7 @@ Metric_type = 'RATIO';           % RATIO -> Ratio test ; SSD -> Sum Square Dista
 Min_Query_features = 50;  % minimum number of 50 Harris points in Query image
 %end of parameters
 
-resultsdir  = sprintf('../results/exp_%.2f_%.2f_%.2f_%.2f_%.2f_%.2f_%s_%s_%d', sigma_d, sigma_i, Tresh_R, NMS_size, Patchsize, Tresh_Metric, Descriptor_type, Metric_type, Min_Query_features); %the directory for dumping results
+resultsdir  = sprintf('../results/exp_%s_%.2f_%.2f_%.2f_%.2f_%.2f_%.2f_%s_%s_%d',data_folder, sigma_d, sigma_i, Tresh_R, NMS_size, Patchsize, Tresh_Metric, Descriptor_type, Metric_type, Min_Query_features); %the directory for dumping results
 mkdir(resultsdir);
 
 %----------------------------------------------------------------------------
