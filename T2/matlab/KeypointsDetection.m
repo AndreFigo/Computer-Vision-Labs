@@ -1,5 +1,5 @@
 function [Pts] = KeypointsDetection(Img,Pts)
-    sigma = 0.5;
+    sigma = 2;
     hsize = 2*ceil(3*sigma)+1;
     gaussian_kernel = fspecial('gaussian',hsize,sigma);
     
@@ -16,8 +16,8 @@ function [Pts] = KeypointsDetection(Img,Pts)
         Pts(i,3) = directions(Pts(i,1), Pts(i,2));
     end
     
-    sigma0 = sigma;
-    num_filt = 6;
+    sigma0 = 0.5;
+    num_filt = 10;
     i = 1:num_filt;
     sigma_l(i) = sqrt(2).^(i-1) * sigma0;
     h_size(i) = 2 * ceil(3 * sigma_l(i)) + 1; 

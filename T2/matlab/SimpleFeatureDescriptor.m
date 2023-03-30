@@ -4,7 +4,7 @@ function [Descriptors] = SimpleFeatureDescriptor(Img,Pts, Patch_size)
     [ rows, cols] = size(Img);
 
     for i = 1:size(Pts,1)
-        dim = 5;
+        % dim = 5;
         dim = floor(Patch_size/2); % 2 for each side
         x = Pts(i,1);
         y = Pts(i,2);

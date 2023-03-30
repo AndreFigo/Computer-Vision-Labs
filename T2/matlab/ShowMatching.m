@@ -1,16 +1,16 @@
-function ShowMatching(MatchList,img1,img2,Dscpt1,Dscpt2, Pts1, Pts2)
+function ShowMatching(MatchList,img1,img2,Dscpt1,Dscpt2, Pts1, Pts2, file)
 % Show all matches by ploting the line that connects both matched keypoints. 
 % Create a composed image with the original and query image to plot the connected points.
 % Allow also the possibility to visualise the 8x8 (or 5x5) feature patches
 % per matching.
 
 feat_size = sqrt(size(Dscpt1,2));
-close all;
+%close all;
 figure(); 
 imshowpair(img1, img2, 'montage'); hold on;
 for i=1:size(MatchList,1)
 % for i=1:2
-    figure(1);
+    %figure(1);
     pos1 = Pts1(i,1:2);
     if MatchList(i,2) == -1
         % disp('No match found')
@@ -30,6 +30,8 @@ for i=1:size(MatchList,1)
     % imshow(b,[]);
     % break;
 end
+
+saveas(gcf, file)
 
 end
         

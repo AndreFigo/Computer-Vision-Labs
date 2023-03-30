@@ -1,7 +1,7 @@
 clear;
+close all;
 
-datadir     = '../datasets/graf';    %the directory containing the images
-resultsdir  = '../results'; %the directory for dumping results
+datadir     = '../datasets/bikes';    %the directory containing the images
 
 %parameters
 sigma_d  = 1;                  % Recommended. Adjust if needed.
@@ -16,8 +16,10 @@ Metric_type = 'RATIO';           % RATIO -> Ratio test ; SSD -> Sum Square Dista
 Min_Query_features = 50;  % minimum number of 50 Harris points in Query image
 %end of parameters
 
-%----------------------------------------------------------------------------
+resultsdir  = sprintf('../results/exp_%.2f_%.2f_%.2f_%.2f_%.2f_%.2f_%s_%s_%d', sigma_d, sigma_i, Tresh_R, NMS_size, Patchsize, Tresh_Metric, Descriptor_type, Metric_type, Min_Query_features); %the directory for dumping results
+mkdir(resultsdir);
 
+%----------------------------------------------------------------------------
 % Read list of Files with Homography matrices
 list = dir(sprintf('%s/*.txt',datadir));
 
@@ -52,7 +54,7 @@ if size(Dscrpt1,1) > Min_Query_features
     
     % Read TEST images %
     [path2, imgname2, dummy2] = fileparts(imglist(i).name);
-    img2 = imread(sprintf('%s/%s', datadir, imglist(2).name));
+    img2 = imread(sprintf('%s/%s', datadir, imglist(i).name));
     
     if (ndims(img2) == 3)
         img2 = rgb2gray(img2);
@@ -73,9 +75,13 @@ if size(Dscrpt1,1) > Min_Query_features
     MatchList = FeatureMatching(Dscrpt1, Dscrpt2, Tresh_Metric, Metric_type);
     
     %Show matched keypoints and keypoint's feature patches
+
+    file_name = sprintf('%s/%s_%s.png', resultsdir, imgname1, imgname2);
     
-    ShowMatching(MatchList,img1,img2,Dscrpt1,Dscrpt2, Pts_N1, Pts_N2);
+    ShowMatching(MatchList,img1,img2,Dscrpt1,Dscrpt2, Pts_N1, Pts_N2, file_name);
     
   end
+
+  
 end
     
