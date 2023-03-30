@@ -1,15 +1,15 @@
 clear;
 close all;
 
-data_folder ='wall';
+data_folder ='graf';
 
 datadir     = '../datasets';    %the directory containing the images
 datadir = sprintf('%s/%s',datadir, data_folder);
 %parameters
 sigma_d  = 1;                  % Recommended. Adjust if needed.
 sigma_i  = 2;                  % Recommended. Adjust if needed.
-Tresh_R = 0.05;                   % Set as example. Adjust if needed.
-NMS_size = 10;                 % Recommended. Adjust if needed.
+Tresh_R = 50;                   % Set as example. Adjust if needed.
+NMS_size = 7;                 % Recommended. Adjust if needed.
 Patchsize  = 8;               % Set as example. Will depends on the scale.
 Tresh_Metric = 0.7 ;            % Set as example. Minimum distance metric error for matching
 Descriptor_type  = 'S-MOPS';   % SIMPLE -> Simple 5x5 patch ; S-MOPS -> Simplified MOPS
@@ -26,7 +26,12 @@ mkdir(resultsdir);
 list = dir(sprintf('%s/*.txt',datadir));
 
 % Read QUERY Image - IMAGE 1
-imglist = dir(sprintf('%s/*.ppm', datadir));
+
+if strcmp(data_folder,'yosemite')
+    imglist = dir(sprintf('%s/*.jpg', datadir));
+else
+    imglist = dir(sprintf('%s/*.ppm', datadir));
+end
 [path1, imgname1, dummy1] = fileparts(imglist(1).name);
 img1 = imread(sprintf('%s/%s', datadir, imglist(1).name));
 
@@ -92,7 +97,8 @@ if size(Dscrpt1,1) > Min_Query_features
     ShowMatching(MatchList,img1,img2,Dscrpt1,Dscrpt2, Pts_N1, Pts_N2, file_name);
     
   end
-
+else
+    disp('Not enough features');
   
 end
     

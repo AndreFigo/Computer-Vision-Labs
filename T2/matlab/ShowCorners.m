@@ -34,7 +34,8 @@ function ShowCorners(img, Pts, file)
         y3 = center(2) + corners(2,3);
         x4 = center(1) + corners(1,4);
         y4 = center(2) + corners(2,4);
-    
+        
+        plot(Pts(:,2), Pts(:,1), '+', 'MarkerSize', 5, 'Color', 'r');
         patch('Vertices',[ y1 y2 y3 y4; x1 x2 x3 x4]','Faces',[1 2 3 4],'Edgecolor', 'g','Facecolor','none','Linewidth',1);
         axis equal;
         % xlim([0 size(img,2)]);
