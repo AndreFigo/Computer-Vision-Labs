@@ -14,11 +14,11 @@ Metric_type = 'SSD';
 
 Pts_1 = HarrisCorner(img1,Tresh_R,sigma_d,sigma_i,NMS_size); 
 
-figure();
-imshow(img);
-hold on;
-axis on;
-plot(Pts_1(:,2), Pts_1(:,1), 'o');
+% figure();
+% imshow(img);
+% hold on;
+% axis on;
+% plot(Pts_1(:,2), Pts_1(:,1), 'o');
 
 %I am using the following code to plot the corners. I am not sure how to plot the scale and orientation of the corners.
 Pts_N1 = KeypointsDetection(img1,Pts_1);
@@ -61,4 +61,6 @@ for i =1:size(Pts_N1,1)
     % xlim([0 size(img,2)]);
     % ylim([0 size(img,1)]);
 end
+
+
 

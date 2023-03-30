@@ -1,7 +1,7 @@
 clear;
 close all;
 
-data_folder ='graf';
+data_folder ='wall';
 
 datadir     = '../datasets';    %the directory containing the images
 datadir = sprintf('%s/%s',datadir, data_folder);
@@ -40,6 +40,12 @@ img1 = double(img1) / 255;
 Pts_1 = HarrisCorner(img1,Tresh_R,sigma_d,sigma_i,NMS_size); 
 % Detect Keypoints 
 Pts_N1 = KeypointsDetection(img1,Pts_1);
+
+
+file_name = sprintf('%s/%s.png', resultsdir, imgname1);
+ShowCorners(img1,Pts_N1, file_name);
+
+
 % Extract keypoints descriptors 
 Dscrpt1 = FeatureDescriptor(img1,Pts_N1,Descriptor_type,Patchsize);
 
@@ -67,6 +73,9 @@ if size(Dscrpt1,1) > Min_Query_features
     %actual Harris Conners code function calls%  
     Pts_2 = HarrisCorner(img2,Tresh_R,sigma_d,sigma_i,NMS_size);   
     Pts_N2 = KeypointsDetection(img2,Pts_2);
+
+    file_name = sprintf('%s/%s.png', resultsdir, imgname2);
+    ShowCorners(img2,Pts_N2, file_name);
     
     %actual feature descritor 
     
