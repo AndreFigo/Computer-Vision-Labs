@@ -5,9 +5,15 @@ for i = 1:size(Dscpt1,1)
     diff = sqrt(sum(diff.^2,2));
     [val,ind] = min(diff);
     aux =  diff;
-    aux(ind) = [];
-    [val2,ind2] = min(aux);
-    ratio = val/val2;
+    if numel(aux)> 1
+        aux(ind) = [];
+        [val2,ind2] = min(aux);
+        ratio = val/val2;
+    else
+        ratio = val;
+    end
+
+    
     if(ratio < Tresh)
         Match(i,:) = [i, ind, ratio];
     else

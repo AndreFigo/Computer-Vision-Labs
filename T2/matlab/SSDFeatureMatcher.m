@@ -3,7 +3,7 @@ function [Match] = SSDFeatureMatcher(Dscpt1,Dscpt2,Tresh)
         diff = Dscpt1(i,:) - Dscpt2;
         % disp(size(diff));
         diff = sqrt(sum(diff.^2,2));
-        [val,ind] = min(diff)
+        [val,ind] = min(diff);
         if(val < Tresh)
             Match(i,:) = [i, ind, val];
         else
