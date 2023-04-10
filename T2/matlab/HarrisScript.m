@@ -1,19 +1,19 @@
 clear;
 close all;
 
-data_folder ='graf';
+data_folder ='wall';
 
 datadir     = '../datasets';    %the directory containing the images
 datadir = sprintf('%s/%s',datadir, data_folder);
 %parameters
 sigma_d  = 1;                  % Recommended. Adjust if needed.
 sigma_i  = 2;                  % Recommended. Adjust if needed.
-Tresh_R = 50;                   % Set as example. Adjust if needed.
-NMS_size = 7;                 % Recommended. Adjust if needed.
+Tresh_R = 0.2;                   % Set as example. Adjust if needed.
+NMS_size = 10;                 % Recommended. Adjust if needed.
 Patchsize  = 8;               % Set as example. Will depends on the scale.
-Tresh_Metric = 0.7 ;            % Set as example. Minimum distance metric error for matching
+Tresh_Metric = 0.6 ;            % Set as example. Minimum distance metric error for matching
 Descriptor_type  = 'S-MOPS';   % SIMPLE -> Simple 5x5 patch ; S-MOPS -> Simplified MOPS
-Metric_type = 'RATIO';           % RATIO -> Ratio test ; SSD -> Sum Square Distance
+Metric_type = 'SSD';           % RATIO -> Ratio test ; SSD -> Sum Square Distance
 
 Min_Query_features = 50;  % minimum number of 50 Harris points in Query image
 %end of parameters
