@@ -20,6 +20,7 @@ elseif(strcmp(Dec_type, 'EXP'))
 else
     disp("Invalid decomposition type");
 end
+t = -R*C;
 %compute reprojection error
 
 end
