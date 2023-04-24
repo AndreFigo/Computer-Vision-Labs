@@ -1,7 +1,7 @@
 function [ K, R, C ] = decomposeEXP(P)
 %decompose P into K, R and t
-A = P(1:3,1:3);
-b = P(1:3,end);
+A = P(:,1:3);
+b = P(:,end);
 
 a1 = A(1, :);
 a2 = A(2, :);
@@ -37,8 +37,11 @@ tx = (b1/rho - u0*tz + alpha*cot_theta*ty)/alpha;
 
 t = [tx ty tz]';
 R = [r1; r2; r3];
+C = -R' * t;
+
 K = [alpha, -alpha*cot_theta, u0;
-     0, beta, v0;
+     0, beta/sin_theta, v0;
      0, 0, 1];
+
 
 end

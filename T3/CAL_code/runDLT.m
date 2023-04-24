@@ -23,4 +23,33 @@ end
 t = -R*C;
 %compute reprojection error
 
+XYZ(4,:) = 1;
+xy(3,:) = 1;
+
+
+% xy_projected = ones(2, size(xy,2));
+
+% for i = 1:size(XYZ,2)
+%     xy_projected(:,i) = M*XYZ(:,i);
+% end
+
+
+x_reproj = (M(1,:) * XYZ) ./ (M(3,:) * XYZ);
+y_reproj = (M(2,:) * XYZ) ./ (M(3,:) * XYZ);
+
+
+% check is last coordinate is 1
+
+err_mat = [x_reproj - xy(1,:); y_reproj - xy(2,:)];
+for i=1:size(xy,2)
+    norms(i) = norm(err_mat(:,i));
+end
+error = mean(norms);
+
+
+
+% showResults(img, xy, [x_reproj; y_reproj], runDLT");
+
+
+
 end

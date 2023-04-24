@@ -10,8 +10,6 @@ for i = 1:size(XYZ,2)
     xy_projected(:,i) = P*XYZ(:,i);
 end
 
-
-
 %compute cost function value
 f = sum(sqrt(sum((xy-xy_projected).^2,1)).^2);
 
