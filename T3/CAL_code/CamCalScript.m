@@ -4,13 +4,13 @@ close all;
 
 IMG_NAME = 'images/image001.jpg';
 img_I = imread(IMG_NAME);
-%image(img_I);
-%axis off
-%axis image
+image(img_I);
+
+axis image
 
 % Decomposition Approach
-D_type = 'QR';
-%D_type = 'EXP';
+% D_type = 'QR';
+D_type = 'EXP';
 
 %This function displays the calibration image and allows the user to click
 %in the image to get the input points. Left click on the chessboard corners
@@ -22,9 +22,14 @@ D_type = 'QR';
 %XYZ matrices and use them as input for your algorithms.
 
 points_loaded = true;
+manual_points = false;
 
 if ~points_loaded
-    [xy, XYZ] = getpoints(IMG_NAME);
+    if manual_points
+        [xy, XYZ] = getpoints(img_I);
+    else
+        [xy, XYZ] = GetPointsHarris(img_I);
+    end
 else
     load xy.mat
     load XYZ.mat
@@ -39,7 +44,7 @@ end
 
 % === Task 4 Gold algorithm with radial distortion estimation ===
 
-%[K, R, t, Kd, error] = runGoldRadial(xy, XYZ, D_type);
+%[K, R, t, Kd, error] = runGoldRadial(xy, XYZ, D_type, img_I);
 
 % === Bonus: Undistort input Image ===
 
