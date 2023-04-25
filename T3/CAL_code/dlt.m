@@ -9,7 +9,7 @@ for i = 1:size(xy,2)
     A(2 * i, :) = [0, 0, 0, 0, w(i)*XYZ(:,i)', -xy(2,i)*XYZ(:,i)'];
 end
 
-[U,S,V] = svd(A)
+[U,S,V] = svd(A);
 
-P = reshape( V(:,end), 3, 4);
+P = reshape( V(:,end), [4,3])';
 end

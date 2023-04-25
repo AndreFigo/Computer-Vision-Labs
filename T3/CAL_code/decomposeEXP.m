@@ -31,9 +31,9 @@ r2 = cross(r3,r1);
 
 cot_theta = cos_theta / sin_theta;
 
-tz =  b3 / rho;
-ty = (b2/rho - v0*tz) * sin_theta / beta;
-tx = (b1/rho - u0*tz + alpha*cot_theta*ty)/alpha;
+tz =  b3 * rho;
+ty = (b2*rho - v0*tz) * sin_theta / beta;
+tx = (b1*rho - u0*tz + alpha*cot_theta*ty)/alpha;
 
 t = [tx ty tz]';
 R = [r1; r2; r3];

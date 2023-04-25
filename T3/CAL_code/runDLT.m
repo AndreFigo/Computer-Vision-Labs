@@ -1,16 +1,15 @@
-function [K, R, t, error] = runDLT(xy, XYZ, Dec_type)
+function [K, R, t, error] = runDLT(xy, XYZ, Dec_type, img)
 
 %normalize data points
-xy_normalized = [];
-XYZ_normalized = [];
+[xy_normalized, XYZ_normalized, T, U] = normalization(xy, XYZ);
 
-[xyn, XYZn, T, U] = normalization(xy, XYZ);
+
 
 %compute DLT
 [P_normalized] = dlt(xy_normalized, XYZ_normalized);
 
 %denormalize camera matrix
-M = inv(T) * P_normalized * U;
+M = T\ P_normalized * U;
 
 %factorize camera matrix in to K, R and t
 if (strcmp(Dec_type, 'QR'))
@@ -32,7 +31,8 @@ xy(3,:) = 1;
 % for i = 1:size(XYZ,2)
 %     xy_projected(:,i) = M*XYZ(:,i);
 % end
-
+disp(size(M))
+disp(M)
 
 x_reproj = (M(1,:) * XYZ) ./ (M(3,:) * XYZ);
 y_reproj = (M(2,:) * XYZ) ./ (M(3,:) * XYZ);
@@ -46,9 +46,11 @@ for i=1:size(xy,2)
 end
 error = mean(norms);
 
+%disp(x_reproj);
+% disp(y_reproj(:, 1:10));
 
-
-% showResults(img, xy, [x_reproj; y_reproj], runDLT");
+title_name = sprintf("Calibration with runDLT and %s decomposition type", Dec_type);
+showResults(img, xy, [x_reproj; y_reproj], title_name, false, []);
 
 
 
