@@ -4,8 +4,6 @@ function [K, R, t, error] = runDLT(xy, XYZ, Dec_type, img)
 [xy_normalized, XYZ_normalized, T, U] = normalization(xy, XYZ);
 
 
-
-
 %compute DLT
 [P_normalized] = dlt(xy_normalized, XYZ_normalized);
 
@@ -27,12 +25,12 @@ xy(3,:) = 1;
 
 
 xy_reproj = (M(1:2,:) * XYZ) ./ (M(3,:) * XYZ);
-error = mean(sqrt(sum((xy_normalized(1:2,:)-xy_reproj).^2,1)));
+error = mean(sqrt(sum((xy(1:2,:)-xy_reproj).^2,1)));
 
 disp("Error " +  error);
 
 title_name = sprintf("Calibration with runDLT and %s decomposition type", Dec_type);
-showResults(img, xy_normalized, xy_reproj, title_name, false, []);
+showResults(img, xy, xy_reproj, title_name, false, []);
 
 
 
