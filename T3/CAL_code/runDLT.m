@@ -26,31 +26,12 @@ XYZ(4,:) = 1;
 xy(3,:) = 1;
 
 
-% xy_projected = ones(2, size(xy,2));
+xy_reproj = (M(1:2,:) * XYZ) ./ (M(3,:) * XYZ);
+error = mean(sqrt(sum((xy(1:2,:)-xy_reproj).^2,1)));
 
-% for i = 1:size(XYZ,2)
-%     xy_projected(:,i) = M*XYZ(:,i);
-% end
-disp(size(M))
-disp(M)
-
-x_reproj = (M(1,:) * XYZ) ./ (M(3,:) * XYZ);
-y_reproj = (M(2,:) * XYZ) ./ (M(3,:) * XYZ);
-
-
-% check is last coordinate is 1
-
-err_mat = [x_reproj - xy(1,:); y_reproj - xy(2,:)];
-for i=1:size(xy,2)
-    norms(i) = norm(err_mat(:,i));
-end
-error = mean(norms);
-
-%disp(x_reproj);
-% disp(y_reproj(:, 1:10));
 
 title_name = sprintf("Calibration with runDLT and %s decomposition type", Dec_type);
-showResults(img, xy, [x_reproj; y_reproj], title_name, false, []);
+showResults(img, xy, xy_reproj, title_name, false, []);
 
 
 

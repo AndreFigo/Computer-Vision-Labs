@@ -5,7 +5,7 @@ M = P(1:3,1:3);
 
 [Q, R] = qr(inv(M));
 
-[U, S, V] = svd(M);
+[U, S, V] = svd(P);
 C = V(:,end);
 C = C / C(end);
 C = C(1:3);

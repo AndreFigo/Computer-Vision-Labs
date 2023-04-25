@@ -31,48 +31,46 @@ function [K, R, t, Kd, error] = runGoldRadial(xy, XYZ, Dec_type, img)
     end
     t = -R*C;
     
-
-%     %compute reprojection error
-%     xyz = [R t]*[XYZ; ones(1, size(XYZ,2))];
-%     xy_p = xyz(1:2,:)./xyz(3,:);
-
-%     r = sqrt(xy_p(1,:).^2 + xy_p(2,:).^2);
-%     L = 1 + Kd(1)*r.^2 + Kd(2)*r.^4;
-    
-%     xy_d = L.*xy_p;
-%     % xy_d_h = [xy_d; ones(1,size(XYZ,2))];
-
-    
-% x_reproj_optimal = (M(1,:) * xy_d) ./ (M(3,:) * xy_d);
-% y_reproj_optimal = (M(2,:) * xy_d) ./ (M(3,:) * xy_d);
-
-% %compute reprojection error
-% err_mat = [x_reproj_optimal - xy_d(1,:); y_reproj_optimal - xy_d(2,:)];
-% for i=1:size(xy_d,2)
-%     norms(i) = norm(err_mat(:,i));
-% end
-
-% error = mean(norms);
-
-
-
     XYZ(4,:) = 1;
     xy(3,:) = 1;
 
+%     %compute reprojection error
+    xyz_cam = [R t]*XYZ_normalized;
+    xy_hat = xyz_cam(1:2,:)./xyz_cam(3,:);
 
-    x_reproj = (M(1,:) * XYZ) ./ (M(3,:) * XYZ);
-    y_reproj = (M(2,:) * XYZ) ./ (M(3,:) * XYZ);
-
-
-    err_mat = [x_reproj - xy(1,:); y_reproj - xy(2,:)];
-    for i=1:size(xy,2)
-        norms(i) = norm(err_mat(:,i));
-    end
-    error = mean(norms);
+    sxy_d = inv(K) * xy_normalized;
+    %points with distortion 
+    xy_d_or = sxy_d(1:2,:)./sxy_d(3,:);
 
 
+    r = sqrt(xy_hat(1,:).^2 + xy_hat(2,:).^2);
+    L = 1 + Kd(1)*r.^2 + Kd(2)*r.^4;
+    
+    xy_d = L.*xy_hat;
+
+    error = mean(sqrt(sum((xy_d - xy_d_or).^2,1)));
+    
+    
+    
+    % Reprojection points for ploting
+    xyz_cam = [R t]*XYZ;
+    xy_hat = xyz_cam(1:2,:)./xyz_cam(3,:);
+
+    r = sqrt(xy_hat(1,:).^2 + xy_hat(2,:).^2);
+    L = 1 + Kd(1)*r.^2 + Kd(2)*r.^4;
+
+    xy_d = L.*xy_hat;
+    xy_d = [xy_d; ones(1,size(XYZ,2))];
+    xy_reproj = K * xy_d;
+    xy_reproj = xy_reproj./xy_reproj(3,:);
+    
+
+    disp("Error " +  error);
+
+    
+    disp( mean(sqrt(sum((xy - xy_reproj).^2,1))));
     title_name = sprintf("Calibration with runGoldRadial and %s decomposition type", Dec_type);
-    showResults(img, xy, [x_reproj; y_reproj], title_name, false, []);
+    showResults(img, xy, xy_reproj, title_name, false, []);
 
 
 

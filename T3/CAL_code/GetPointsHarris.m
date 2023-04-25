@@ -1,5 +1,9 @@
 function [xy XYZ] = GetPointsHarris(img)
     
+    image(img_I);
+
+    axis image
+
     % Initially, the list of points is empty.
     xy = [];
     XYZ = [];

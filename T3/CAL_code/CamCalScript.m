@@ -4,13 +4,11 @@ close all;
 
 IMG_NAME = 'images/image001.jpg';
 img_I = imread(IMG_NAME);
-image(img_I);
 
-axis image
 
 % Decomposition Approach
-% D_type = 'QR';
-D_type = 'EXP';
+D_type = 'QR';
+%D_type = 'EXP';
 
 %This function displays the calibration image and allows the user to click
 %in the image to get the input points. Left click on the chessboard corners
@@ -40,11 +38,11 @@ end
 
 % === Task 3 Gold algorithm ===
 
-[K, R, t, error] = runGold(xy, XYZ, D_type, img_I);
+%[K, R, t, error] = runGold(xy, XYZ, D_type, img_I);
 
 % === Task 4 Gold algorithm with radial distortion estimation ===
 
-%[K, R, t, Kd, error] = runGoldRadial(xy, XYZ, D_type, img_I);
+[K, R, t, Kd, error] = runGoldRadial(xy, XYZ, D_type, img_I);
 
 % === Bonus: Undistort input Image ===
 
