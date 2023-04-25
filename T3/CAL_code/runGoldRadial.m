@@ -35,10 +35,10 @@ function [K, R, t, Kd, error] = runGoldRadial(xy, XYZ, Dec_type, img)
     xy(3,:) = 1;
 
 %     %compute reprojection error
-    xyz_cam = [R t]*XYZ_normalized;
+    xyz_cam = [R t]*XYZ;
     xy_hat = xyz_cam(1:2,:)./xyz_cam(3,:);
 
-    sxy_d = inv(K) * xy_normalized;
+    sxy_d = inv(K) * xy;
     %points with distortion 
     xy_d_or = sxy_d(1:2,:)./sxy_d(3,:);
 
@@ -68,7 +68,7 @@ function [K, R, t, Kd, error] = runGoldRadial(xy, XYZ, Dec_type, img)
     disp("Error " +  error);
 
     
-    disp( mean(sqrt(sum((xy - xy_reproj).^2,1))));
+    % disp( mean(sqrt(sum((xy - xy_reproj).^2,1))));
     title_name = sprintf("Calibration with runGoldRadial and %s decomposition type", Dec_type);
     showResults(img, xy, xy_reproj, title_name, false, []);
 

@@ -39,16 +39,11 @@ xy(3,:) = 1;
 
 
 % _no = not optimized
-
 xy_reproj_no = (M_no(1:2,:) * XYZ) ./ (M_no(3,:) * XYZ);
-
-
-
 error_no = mean(sqrt(sum((xy_reproj_no - xy(1:2,:)).^2,1)));
 
 
 xy_reproj = (M(1:2,:) * XYZ) ./ (M(3,:) * XYZ);
-
 error = mean(sqrt(sum((xy_reproj - xy(1:2,:)).^2,1)));
 
 
