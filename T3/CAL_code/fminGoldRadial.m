@@ -20,7 +20,7 @@ function f = fminGoldRadial(p, xy, XYZ, w)
     
     xy_d = L.*xy_hat;
 
-    f = mean(sqrt(sum((xy_d - xy_d_or).^2,1)));
+    f = sum(sqrt(sum((xy_d - xy_d_or).^2,1)));
 
 
 
