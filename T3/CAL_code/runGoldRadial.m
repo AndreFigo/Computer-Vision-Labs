@@ -35,9 +35,14 @@ function [K, R, t, Kd, error] = runGoldRadial(xy, XYZ, Dec_type, img)
     xy(3,:) = 1;
 
 %     %compute reprojection error
+
+    %! use this line when using normalized points
+    % xyz_cam = [R t]*XYZ_normalized;
     xyz_cam = [R t]*XYZ;
     xy_hat = xyz_cam(1:2,:)./xyz_cam(3,:);
 
+    %! use this line when using normalized points
+    % sxy_d = inv(K) * xy_normalized;
     sxy_d = inv(K) * xy;
     %points with distortion 
     xy_d_or = sxy_d(1:2,:)./sxy_d(3,:);
