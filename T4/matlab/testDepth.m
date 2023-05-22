@@ -6,8 +6,8 @@ im1 = rgb2gray(im1);
 im2 = rgb2gray(im2);
 load('rectify.mat', 'M1', 'M2', 'K1n', 'K2n', 'R1n', 'R2n', 't1n', 't2n');
 
-maxDisp = 20;
-windowSize = 3;
+maxDisp = 40;
+windowSize = 35;
 dispM = computeDisparity(im1, im2, maxDisp, windowSize);
 
 % --------------------  get depth map
